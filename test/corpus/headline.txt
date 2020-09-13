@@ -1,0 +1,12 @@
+===============
+Simple Headline
+===============
+
+* First level title
+
+---
+
+(org_file
+  (headline
+    (title
+      (content))))
