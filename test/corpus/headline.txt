@@ -8,6 +8,142 @@ Simple Headline
 
 (org_file
   (headline
-    (stars)
-    (whitespace)
+    (stars) (whitespace)
     (title (text))))
+
+
+================
+Complex Headline
+================
+
+*** DONE [#C] COMMENT Chaussette :#tag:ARCHIVE:test%:tag2:
+
+---
+
+(org_file
+  (headline
+    (stars) (whitespace)
+    (todo (todo_state)) (whitespace)
+    (priority (priority_level)) (whitespace)
+    (comment) (whitespace)
+    (title (text)) (whitespace)
+    (tags (tag tag tag tag))))
+
+===============
+Nested sections
+===============
+
+* Level 1 heading
+A little text to test ownership in level 1
+** Level 2 heading
+This text should belong to level 2
+
+---
+
+(org_file
+  (headline
+    (stars) (whitespace)
+    (title (text))
+
+    (section 
+      (paragraph)
+      (headline
+        (stars) (whitespace)
+        (title (text))
+
+        (section 
+          (paragraph))))))
+
+=======================
+Nested complex sections
+=======================
+
+
+* TODO [#B] COMMENT Level 1 commented
+
+This heading should be considered as commented
+
+** DONE [#A] Level 2 tagged :bare:#tag:other_tag:third@:okay%:
+
+This heading should have a few tags
+
+---
+(org_file
+  (headline
+    (stars) (whitespace)
+    (todo (todo_state)) (whitespace)
+    (priority (priority_level)) (whitespace)
+    (comment) (whitespace)
+    (title (text))
+
+    (section 
+      (paragraph)
+      (headline
+        (stars) (whitespace)
+        (todo (todo_state)) (whitespace)
+        (priority (priority_level)) (whitespace)
+        (title (text)) (whitespace)
+        (tags (tag tag tag tag tag))
+
+        (section 
+          (paragraph))))))
+
+===============
+Skipping Levels
+===============
+
+* Level 1 heading
+
+**** Skipping a level
+This text should be in level 4 heading
+
+** Level 2 heading
+This should belong to level 1 heading
+
+---
+
+(org_file
+  (headline
+    (stars) (whitespace)
+    (title (text))
+
+    (section 
+      (headline
+        (stars) (whitespace)
+        (title (text))
+
+        (section 
+          (paragraph)))
+
+      (headline
+      (stars) (whitespace)
+      (title (text))
+
+      (section 
+          (paragraph))))))
+
+==================
+Indent Dedent text
+==================
+
+* Level 1 heading
+** Indent then dedent is still in level 2
+   This is indented text and belongs to level 2
+
+This is dedented text and belongs to level 2
+
+---
+
+(org_file
+  (headline
+    (stars) (whitespace)
+    (title (text))
+
+    (section 
+      (headline
+        (stars) (whitespace)
+        (title (text))
+
+        (section 
+          (paragraph paragraph))))))
+
