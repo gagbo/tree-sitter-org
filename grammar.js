@@ -1,5 +1,9 @@
 module.exports = grammar({
-  name: 'Org',
+  name: 'org',
+
+  externals: $ => [
+      $.org_headline
+  ],
 
   rules: {
     // TODO: add the metadata header
@@ -11,9 +15,9 @@ module.exports = grammar({
     ),
     
     headline: $ => seq(
-        $.stars,
+        field('level', $.stars),
         $.whitespace,
-        $.title
+        field('title', $.title)
     ),
 
     title: $ => $.text,

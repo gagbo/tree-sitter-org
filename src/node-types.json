@@ -2,19 +2,32 @@
   {
     "type": "headline",
     "named": true,
-    "fields": {},
+    "fields": {
+      "level": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "stars",
+            "named": true
+          }
+        ]
+      },
+      "title": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "title",
+            "named": true
+          }
+        ]
+      }
+    },
     "children": {
-      "multiple": true,
+      "multiple": false,
       "required": true,
       "types": [
-        {
-          "type": "stars",
-          "named": true
-        },
-        {
-          "type": "title",
-          "named": true
-        },
         {
           "type": "whitespace",
           "named": true

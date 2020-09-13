@@ -1,5 +1,5 @@
 {
-  "name": "Org",
+  "name": "org",
   "rules": {
     "org_file": {
       "type": "REPEAT",
@@ -21,16 +21,24 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "SYMBOL",
-          "name": "stars"
+          "type": "FIELD",
+          "name": "level",
+          "content": {
+            "type": "SYMBOL",
+            "name": "stars"
+          }
         },
         {
           "type": "SYMBOL",
           "name": "whitespace"
         },
         {
-          "type": "SYMBOL",
-          "name": "title"
+          "type": "FIELD",
+          "name": "title",
+          "content": {
+            "type": "SYMBOL",
+            "name": "title"
+          }
         }
       ]
     },
@@ -58,7 +66,12 @@
     }
   ],
   "conflicts": [],
-  "externals": [],
+  "externals": [
+    {
+      "type": "SYMBOL",
+      "name": "org_headline"
+    }
+  ],
   "inline": [],
   "supertypes": []
 }
