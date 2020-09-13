@@ -8,5 +8,6 @@ Simple Headline
 
 (org_file
   (headline
-    (title
-      (content))))
+    (stars)
+    (whitespace)
+    (title (text))))

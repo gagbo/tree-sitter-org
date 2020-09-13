@@ -4,7 +4,7 @@
   "description": "Tree-sitter parser for the Org markup language",
   "main": "index.js",
   "scripts": {
-    "test": "tree-sitter test"
+    "test": "tree-sitter generate && tree-sitter test"
   },
   "author": "Gerry Agbobada",
   "license": "MIT",

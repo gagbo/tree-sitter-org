@@ -1,9 +1,54 @@
 {
   "name": "Org",
   "rules": {
-    "source_file": {
-      "type": "STRING",
-      "value": "hello"
+    "org_file": {
+      "type": "REPEAT",
+      "content": {
+        "type": "SYMBOL",
+        "name": "_section"
+      }
+    },
+    "_section": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "headline"
+        }
+      ]
+    },
+    "headline": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "stars"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "whitespace"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "title"
+        }
+      ]
+    },
+    "title": {
+      "type": "SYMBOL",
+      "name": "text"
+    },
+    "stars": {
+      "type": "PATTERN",
+      "value": "\\*+"
+    },
+    "text": {
+      "type": "PATTERN",
+      "value": "[^\\r\\n]+"
+    },
+    "whitespace": {
+      "type": "PATTERN",
+      "value": "\\s+"
     }
   },
   "extras": [
