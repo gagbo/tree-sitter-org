@@ -1,3 +1,6 @@
+# Use nix-shell
+# Or with direnv:
+# use_nix
 { pkgs ? import <nixpkgs> {} }:
   pkgs.mkShell {
     buildInputs = [ 
