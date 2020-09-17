@@ -2,6 +2,10 @@
 # Example file
 example-file
 
+### CCLS ###
+# CCLS is in the Nix env for completion
+.ccls-cache
+
 ### Node ###
 # Logs
 logs
