@@ -18,11 +18,11 @@ module.exports = grammar({
     headline: ($) =>
       seq(
         field("level", $.stars),
-        optional(field("todo", $.todo)),
-        optional(field("prio", $.priority)),
-        optional(field("comment", $.comment)),
-        optional(prec(-50, field("title", $.title))),
-        optional(field("tags", $.tags)),
+        field("todo", optional($.todo)),
+        field("prio", optional($.priority)),
+        field("comment", optional($.comment)),
+        field("title", prec(-50, optional($.title))),
+        field("tags", optional($.tags)),
         $.line_ending
       ),
 
