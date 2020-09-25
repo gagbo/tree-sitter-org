@@ -4,7 +4,8 @@
   "description": "Tree-sitter parser for the Org markup language",
   "main": "index.js",
   "scripts": {
-    "test": "tree-sitter generate && tree-sitter test"
+    "test": "tree-sitter generate && tree-sitter test",
+    "lint": "prettier -w grammar.js"
   },
   "author": "Gerry Agbobada",
   "license": "MIT",
@@ -12,6 +13,7 @@
     "nan": "^2.14.1"
   },
   "devDependencies": {
+    "prettier": "^2.1.2",
     "tree-sitter-cli": "^0.16.9"
   }
 }

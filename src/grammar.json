@@ -29,34 +29,183 @@
           }
         },
         {
-          "type": "SYMBOL",
-          "name": "whitespace"
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "FIELD",
+              "name": "todo",
+              "content": {
+                "type": "SYMBOL",
+                "name": "todo"
+              }
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
         },
         {
-          "type": "FIELD",
-          "name": "title",
-          "content": {
-            "type": "SYMBOL",
-            "name": "title"
-          }
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "FIELD",
+              "name": "prio",
+              "content": {
+                "type": "SYMBOL",
+                "name": "priority"
+              }
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "FIELD",
+              "name": "comment",
+              "content": {
+                "type": "SYMBOL",
+                "name": "comment"
+              }
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "PREC",
+              "value": -50,
+              "content": {
+                "type": "FIELD",
+                "name": "title",
+                "content": {
+                  "type": "SYMBOL",
+                  "name": "title"
+                }
+              }
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "FIELD",
+              "name": "tags",
+              "content": {
+                "type": "SYMBOL",
+                "name": "tags"
+              }
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "SYMBOL",
+          "name": "line_ending"
         }
       ]
     },
-    "title": {
-      "type": "SYMBOL",
-      "name": "text"
+    "line_ending": {
+      "type": "TOKEN",
+      "content": {
+        "type": "CHOICE",
+        "members": [
+          {
+            "type": "PATTERN",
+            "value": "\\r\\n"
+          },
+          {
+            "type": "PATTERN",
+            "value": "\\n"
+          }
+        ]
+      }
     },
     "stars": {
       "type": "PATTERN",
       "value": "\\*+"
     },
-    "text": {
+    "title": {
       "type": "PATTERN",
       "value": "[^\\r\\n]+"
     },
-    "whitespace": {
+    "priority": {
       "type": "PATTERN",
-      "value": "\\s+"
+      "value": "\\[#[A-Ca-c]\\]"
+    },
+    "todo": {
+      "type": "TOKEN",
+      "content": {
+        "type": "CHOICE",
+        "members": [
+          {
+            "type": "STRING",
+            "value": "TODO"
+          },
+          {
+            "type": "STRING",
+            "value": "NEXT"
+          },
+          {
+            "type": "STRING",
+            "value": "DONE"
+          },
+          {
+            "type": "STRING",
+            "value": "WAITING"
+          },
+          {
+            "type": "STRING",
+            "value": "CANCELLED"
+          }
+        ]
+      }
+    },
+    "comment": {
+      "type": "PATTERN",
+      "value": "COMMENT"
+    },
+    "tag": {
+      "type": "PATTERN",
+      "value": "[a-zA-Z0-9#%]+"
+    },
+    "tags": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "PATTERN",
+          "value": ":"
+        },
+        {
+          "type": "REPEAT1",
+          "content": {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "tag"
+              },
+              {
+                "type": "PATTERN",
+                "value": ":"
+              }
+            ]
+          }
+        }
+      ]
     }
   },
   "extras": [

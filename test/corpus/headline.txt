@@ -1,15 +1,76 @@
-===============
-Simple Headline
-===============
+===========
+Simple star
+===========
 
-* First level title
+*
 
 ---
 
 (org_file
   (headline
-    (stars) (whitespace)
-    (title (text))))
+    (stars)
+    (line_ending)))
+
+
+================
+Oneword Headline
+================
+
+* First
+
+---
+
+(org_file
+  (headline
+    (stars)
+    (title)
+    (line_ending)))
+
+
+===============
+Simple Headline
+===============
+
+* First level ttitle
+
+---
+
+(org_file
+  (headline
+    (stars)
+    (title)
+    (line_ending)))
+
+
+===========
+Simple TODO
+===========
+
+** TODO
+
+---
+
+(org_file
+  (headline
+    (stars)
+    (todo)
+    (line_ending)))
+
+
+======================
+Simple TODO with title
+======================
+
+** TODO Pass this test
+
+---
+
+(org_file
+  (headline
+    (stars)
+    (todo)
+    (title)
+    (line_ending)))
 
 
 ================
@@ -22,12 +83,13 @@ Complex Headline
 
 (org_file
   (headline
-    (stars) (whitespace)
-    (todo (todo_state)) (whitespace)
-    (priority (priority_level)) (whitespace)
-    (comment) (whitespace)
-    (title (text)) (whitespace)
-    (tags (tag tag tag tag))))
+    (stars) 
+    (todo)
+    (priority)
+    (comment)
+    (title)
+    (tags (tag tag tag tag))
+    (line_ending)))
 
 ===============
 Nested sections
@@ -42,14 +104,16 @@ This text should belong to level 2
 
 (org_file
   (headline
-    (stars) (whitespace)
-    (title (text))
+    (stars)
+    (title)
+(line_ending)
 
     (section 
       (paragraph)
       (headline
-        (stars) (whitespace)
-        (title (text))
+        (stars)
+        (title)
+(line_ending)
 
         (section 
           (paragraph))))))
@@ -70,20 +134,22 @@ This heading should have a few tags
 ---
 (org_file
   (headline
-    (stars) (whitespace)
-    (todo (todo_state)) (whitespace)
-    (priority (priority_level)) (whitespace)
-    (comment) (whitespace)
-    (title (text))
+    (stars)
+    (todo)
+    (priority)
+    (comment)
+    (title)
+(line_ending)
 
     (section 
       (paragraph)
       (headline
-        (stars) (whitespace)
-        (todo (todo_state)) (whitespace)
-        (priority (priority_level)) (whitespace)
-        (title (text)) (whitespace)
+        (stars)
+        (todo)
+        (priority)
+        (title)
         (tags (tag tag tag tag tag))
+(line_ending)
 
         (section 
           (paragraph))))))
@@ -104,21 +170,21 @@ This should belong to level 1 heading
 
 (org_file
   (headline
-    (stars) (whitespace)
-    (title (text))
-
+    (stars)
+    (title)
+(line_ending)
     (section 
       (headline
-        (stars) (whitespace)
-        (title (text))
-
+        (stars)
+        (title)
+(line_ending)
         (section 
           (paragraph)))
 
       (headline
-      (stars) (whitespace)
-      (title (text))
-
+      (stars)
+      (title)
+(line_ending)
       (section 
           (paragraph))))))
 
@@ -136,14 +202,14 @@ This is dedented text and belongs to level 2
 
 (org_file
   (headline
-    (stars) (whitespace)
-    (title (text))
-
+    (stars)
+    (title)
+(line_ending)
     (section 
       (headline
-        (stars) (whitespace)
-        (title (text))
-
+        (stars)
+        (title)
+(line_ending)
         (section 
           (paragraph paragraph))))))
 

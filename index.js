@@ -4,7 +4,7 @@ try {
   try {
     module.exports = require("./build/Debug/tree_sitter_YOUR_LANGUAGE_NAME_binding");
   } catch (_) {
-    throw error
+    throw error;
   }
 }
 

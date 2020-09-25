@@ -3,6 +3,16 @@
     "type": "headline",
     "named": true,
     "fields": {
+      "comment": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "comment",
+            "named": true
+          }
+        ]
+      },
       "level": {
         "multiple": false,
         "required": true,
@@ -13,12 +23,42 @@
           }
         ]
       },
+      "prio": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "priority",
+            "named": true
+          }
+        ]
+      },
+      "tags": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "tags",
+            "named": true
+          }
+        ]
+      },
       "title": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "title",
+            "named": true
+          }
+        ]
+      },
+      "todo": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "todo",
             "named": true
           }
         ]
@@ -29,7 +69,7 @@
       "required": true,
       "types": [
         {
-          "type": "whitespace",
+          "type": "line_ending",
           "named": true
         }
       ]
@@ -51,30 +91,46 @@
     }
   },
   {
-    "type": "title",
+    "type": "tags",
     "named": true,
     "fields": {},
     "children": {
-      "multiple": false,
+      "multiple": true,
       "required": true,
       "types": [
         {
-          "type": "text",
+          "type": "tag",
           "named": true
         }
       ]
     }
   },
   {
+    "type": "comment",
+    "named": true
+  },
+  {
+    "type": "line_ending",
+    "named": true
+  },
+  {
+    "type": "priority",
+    "named": true
+  },
+  {
     "type": "stars",
     "named": true
   },
   {
-    "type": "text",
+    "type": "tag",
     "named": true
   },
   {
-    "type": "whitespace",
+    "type": "title",
+    "named": true
+  },
+  {
+    "type": "todo",
     "named": true
   }
 ]
