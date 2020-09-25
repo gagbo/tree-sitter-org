@@ -13,6 +13,16 @@
           }
         ]
       },
+      "end_title": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "line_ending",
+            "named": true
+          }
+        ]
+      },
       "level": {
         "multiple": false,
         "required": true,
@@ -63,16 +73,6 @@
           }
         ]
       }
-    },
-    "children": {
-      "multiple": false,
-      "required": true,
-      "types": [
-        {
-          "type": "line_ending",
-          "named": true
-        }
-      ]
     }
   },
   {
@@ -104,6 +104,10 @@
         }
       ]
     }
+  },
+  {
+    "type": ":",
+    "named": false
   },
   {
     "type": "comment",

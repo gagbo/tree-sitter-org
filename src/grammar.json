@@ -80,20 +80,16 @@
           "type": "FIELD",
           "name": "title",
           "content": {
-            "type": "PREC",
-            "value": -50,
-            "content": {
-              "type": "CHOICE",
-              "members": [
-                {
-                  "type": "SYMBOL",
-                  "name": "title"
-                },
-                {
-                  "type": "BLANK"
-                }
-              ]
-            }
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "title"
+              },
+              {
+                "type": "BLANK"
+              }
+            ]
           }
         },
         {
@@ -113,8 +109,12 @@
           }
         },
         {
-          "type": "SYMBOL",
-          "name": "line_ending"
+          "type": "FIELD",
+          "name": "end_title",
+          "content": {
+            "type": "SYMBOL",
+            "name": "line_ending"
+          }
         }
       ]
     },
@@ -139,8 +139,15 @@
       "value": "\\*+"
     },
     "title": {
-      "type": "PATTERN",
-      "value": "[^\\r\\n]+"
+      "type": "TOKEN",
+      "content": {
+        "type": "PREC",
+        "value": -50,
+        "content": {
+          "type": "PATTERN",
+          "value": "[^\\r\\n]+"
+        }
+      }
     },
     "priority": {
       "type": "PATTERN",
@@ -186,7 +193,7 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "PATTERN",
+          "type": "STRING",
           "value": ":"
         },
         {
@@ -199,7 +206,7 @@
                 "name": "tag"
               },
               {
-                "type": "PATTERN",
+                "type": "STRING",
                 "value": ":"
               }
             ]

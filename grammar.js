@@ -21,9 +21,9 @@ module.exports = grammar({
         field("todo", optional($.todo)),
         field("prio", optional($.priority)),
         field("comment", optional($.comment)),
-        field("title", prec(-50, optional($.title))),
+        field("title", optional($.title)),
         field("tags", optional($.tags)),
-        $.line_ending
+        field("end_title", $.line_ending)
       ),
 
     // text: ($) => /[^\r\n]+/,
@@ -32,11 +32,11 @@ module.exports = grammar({
 
     stars: ($) => /\*+/,
 
-    title: ($) => /[^\r\n]+/,
+    title: ($) => token(prec(-50, /[^\r\n]+/)),
     priority: ($) => /\[#[A-Ca-c]\]/,
     todo: ($) => token(choice("TODO", "NEXT", "DONE", "WAITING", "CANCELLED")),
     comment: ($) => /COMMENT/,
     tag: ($) => /[a-zA-Z0-9#%]+/,
-    tags: ($) => seq(/:/, repeat1(seq($.tag, /:/))),
+    tags: ($) => seq(":", repeat1(seq($.tag, ":"))),
   },
 });
