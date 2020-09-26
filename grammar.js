@@ -32,11 +32,11 @@ module.exports = grammar({
 
     stars: ($) => /\*+/,
 
-    title: ($) => token(prec(-50, /[^\r\n]+/)),
     priority: ($) => /\[#[A-Ca-c]\]/,
     todo: ($) => token(choice("TODO", "NEXT", "DONE", "WAITING", "CANCELLED")),
     comment: ($) => /COMMENT/,
-    tag: ($) => /[a-zA-Z0-9#%]+/,
-    tags: ($) => seq(":", repeat1(seq($.tag, ":"))),
+    tag: ($) => token(prec(25, /[a-zA-Z0-9#%]+/)),
+    tags: ($) => seq(token(prec(25, ":")), repeat1(seq($.tag, token(prec(25, ":"))))),
+    title: ($) => token(prec(-50, /[^\r\n]+/)),
   },
 });
