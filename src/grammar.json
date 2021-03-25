@@ -143,61 +143,44 @@
       "value": "\\[#[A-Ca-c]\\]"
     },
     "todo": {
-      "type": "TOKEN",
-      "content": {
-        "type": "CHOICE",
-        "members": [
-          {
-            "type": "STRING",
-            "value": "TODO"
-          },
-          {
-            "type": "STRING",
-            "value": "NEXT"
-          },
-          {
-            "type": "STRING",
-            "value": "DONE"
-          },
-          {
-            "type": "STRING",
-            "value": "WAITING"
-          },
-          {
-            "type": "STRING",
-            "value": "CANCELLED"
-          }
-        ]
-      }
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "TODO"
+        },
+        {
+          "type": "STRING",
+          "value": "NEXT"
+        },
+        {
+          "type": "STRING",
+          "value": "DONE"
+        },
+        {
+          "type": "STRING",
+          "value": "WAITING"
+        },
+        {
+          "type": "STRING",
+          "value": "CANCELLED"
+        }
+      ]
     },
     "comment": {
       "type": "PATTERN",
       "value": "COMMENT"
     },
     "tag": {
-      "type": "TOKEN",
-      "content": {
-        "type": "PREC",
-        "value": 25,
-        "content": {
-          "type": "PATTERN",
-          "value": "[a-zA-Z0-9#%]+"
-        }
-      }
+      "type": "PATTERN",
+      "value": "[a-zA-Z0-9#%]+"
     },
     "tags": {
       "type": "SEQ",
       "members": [
         {
-          "type": "TOKEN",
-          "content": {
-            "type": "PREC",
-            "value": 25,
-            "content": {
-              "type": "STRING",
-              "value": ":"
-            }
-          }
+          "type": "STRING",
+          "value": ":"
         },
         {
           "type": "REPEAT1",
@@ -209,15 +192,8 @@
                 "name": "tag"
               },
               {
-                "type": "TOKEN",
-                "content": {
-                  "type": "PREC",
-                  "value": 25,
-                  "content": {
-                    "type": "STRING",
-                    "value": ":"
-                  }
-                }
+                "type": "STRING",
+                "value": ":"
               }
             ]
           }
@@ -228,7 +204,7 @@
       "type": "TOKEN",
       "content": {
         "type": "PREC",
-        "value": -50,
+        "value": -25,
         "content": {
           "type": "PATTERN",
           "value": "[^\\r\\n]+"

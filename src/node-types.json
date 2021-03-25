@@ -106,7 +106,32 @@
     }
   },
   {
+    "type": "todo",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": ":",
+    "named": false
+  },
+  {
+    "type": "CANCELLED",
+    "named": false
+  },
+  {
+    "type": "DONE",
+    "named": false
+  },
+  {
+    "type": "NEXT",
+    "named": false
+  },
+  {
+    "type": "TODO",
+    "named": false
+  },
+  {
+    "type": "WAITING",
     "named": false
   },
   {
@@ -131,10 +156,6 @@
   },
   {
     "type": "title",
-    "named": true
-  },
-  {
-    "type": "todo",
     "named": true
   }
 ]

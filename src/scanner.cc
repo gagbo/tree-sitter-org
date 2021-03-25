@@ -40,12 +40,15 @@ void tree_sitter_org_external_scanner_destroy(void *payload) {}
 
 unsigned tree_sitter_org_external_scanner_serialize(void *payload,
                                                     char *buffer) {
+  auto scan = deserialize(buffer,0);
   return 0;
 }
 
 void tree_sitter_org_external_scanner_deserialize(void *payload,
                                                   const char *buffer,
-                                                  unsigned length) {}
+                                                  unsigned length) {
+  auto scan = deserialize(buffer, length);
+}
 
 bool tree_sitter_org_external_scanner_scan(void *payload, TSLexer *lexer,
                                            const bool *valid_symbols) {
