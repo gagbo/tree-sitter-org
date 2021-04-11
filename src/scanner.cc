@@ -1,5 +1,7 @@
-#include <tree_sitter/parser.h>
+#include "tree_sitter/parser.h"
 #include <memory>
+
+constexpr static std::array<std::string, 2> ORG_TODO_KEYWORDS_1 = {"TODO", "DONE"};
 
 enum TokenType {
   ORG_HEADLINE,
@@ -16,11 +18,6 @@ class Scanner {
         bool scan(TSLexer* lexer, const bool*valid_symbols);
 };
 
-/// Deserialize a buffer and modifies the current scanner to fit this
-std::unique_ptr<Scanner> deserialize(const char* buffer, unsigned int length) {
-    return std::make_unique<Scanner>();
-}
-
 extern "C" {
 void *tree_sitter_org_external_scanner_create();
 void tree_sitter_org_external_scanner_destroy(void *payload);
@@ -33,24 +30,42 @@ bool tree_sitter_org_external_scanner_scan(void *payload, TSLexer *lexer,
                                            const bool *valid_symbols);
 }
 
+unsigned int Scanner::serialize(char *buffer) const {
+  return 0;
+}
+
+bool Scanner::scan(TSLexer *lexer, const bool *valid_symbols) {
+  return false;
+}
+
+/// Deserialize a buffer and modifies the current scanner to fit this
+std::unique_ptr<Scanner> deserialize(const char* buffer, unsigned int length) {
+    return std::make_unique<Scanner>();
+}
+
 
 void *tree_sitter_org_external_scanner_create() { return nullptr; }
 
-void tree_sitter_org_external_scanner_destroy(void *payload) {}
+void tree_sitter_org_external_scanner_destroy(void *payload) {
+  auto scanner = reinterpret_cast<Scanner*>(payload);
+  delete scanner;
+}
 
 unsigned tree_sitter_org_external_scanner_serialize(void *payload,
                                                     char *buffer) {
-  auto scan = deserialize(buffer,0);
-  return 0;
+  auto scanner = reinterpret_cast<Scanner*>(payload);
+  auto size = scanner->serialize(buffer);
+  return size;
 }
 
 void tree_sitter_org_external_scanner_deserialize(void *payload,
                                                   const char *buffer,
                                                   unsigned length) {
-  auto scan = deserialize(buffer, length);
+  auto scanner = deserialize(buffer, length);
 }
 
 bool tree_sitter_org_external_scanner_scan(void *payload, TSLexer *lexer,
                                            const bool *valid_symbols) {
-  return false;
+  auto scanner = reinterpret_cast<Scanner*>(payload);
+  return scanner->scan(lexer, valid_symbols);
 }
