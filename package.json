@@ -10,10 +10,10 @@
   "author": "Gerry Agbobada",
   "license": "MIT",
   "dependencies": {
-    "nan": "^2.14.1"
+    "nan": "^2.14.2"
   },
   "devDependencies": {
     "prettier": "^2.1.2",
-    "tree-sitter-cli": "^0.16.9"
+    "tree-sitter-cli": "^0.19.4"
   }
 }
