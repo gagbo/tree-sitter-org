@@ -8,7 +8,7 @@
     "lint": "prettier -w grammar.js"
   },
   "author": "Gerry Agbobada",
-  "license": "MIT",
+  "license": "GPL-3.0-only",
   "dependencies": {
     "nan": "^2.14.2"
   },
