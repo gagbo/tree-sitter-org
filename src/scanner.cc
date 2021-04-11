@@ -1,7 +1,7 @@
 #include "tree_sitter/parser.h"
 #include <memory>
 
-constexpr static std::array<std::string, 2> ORG_TODO_KEYWORDS_1 = {"TODO", "DONE"};
+static const char* ORG_TODO_KEYWORDS_1[] = {"TODO", "DONE"};
 
 enum TokenType {
   ORG_HEADLINE,
