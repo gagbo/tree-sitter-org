@@ -131,8 +131,8 @@ module.exports = grammar({
 
     org_nbe_less_df: ($) => choice(
       $.block_less_dyn,
-      $.block_begin_line,
-      $.block_end_line,
+      // $.block_begin_line,
+      // $.block_end_line,
       $.babel_call,
       $.keyword,
       $.comment_element,
@@ -153,10 +153,10 @@ module.exports = grammar({
       $.paragraph_f_in,
       $.comment_element),
 
-    paragraph: ($) => repeat1(
+    paragraph: ($) => repeat1(choice(
       seq("PARAGRAPH", optional($.not_newline)),
       seq($.hyperlink, optional($.not_newline)),
-      $.paragraph_line),
+      $.paragraph_line)),
     paragraph_line: ($) => seq(
       $.newline_or_bof,
       choice($.parl_lines, $.end)),
@@ -175,10 +175,10 @@ module.exports = grammar({
 
     // misplaced_footnote_definition: ($) => $.footnote_definition_line,
 
-    parl_indent: ($) => repeat($.wsnn),
+    parl_indent: ($) => repeat1($.wsnn),
     parl_lines: ($) => choice(
       seq($.parl_start, optional($.not_newline)),
-      seq($.parl_indent, $.parl_se_wsnn),
+      seq(optional($.parl_indent), $.parl_se_wsnn),
       $.stars,
       seq(repeat($.wsnn), "STARS", repeat($.wsnn)),
       repeat1($.wsnn)),
@@ -199,7 +199,7 @@ module.exports = grammar({
       seq($.stars, choice(
         $.not_asterisk_whitespace1,
         $.word_char_n)),
-      seq($.parl_indent, $.parl_wsnn)),
+      seq(optional($.parl_indent), $.parl_wsnn)),
 
     parl_ws_bt: ($) => choice(
       $.not_whitespace1,
@@ -268,9 +268,9 @@ module.exports = grammar({
     headline_content: ($) => $.not_newline,
 
     planning: ($) => seq(
-      repeat1(seq($.plan_sep, $.plan_info)),
+      repeat1(seq(optional($.plan_sep), $.plan_info)),
       repeat($.wsnn)),
-    plan_sep: ($) => repeat($.wsnn),
+    plan_sep: ($) => repeat1($.wsnn),
 
     planning_malformed: ($) => repeat1($.plan_mal_info),
     plan_mal_info: ($) => seq(
@@ -337,15 +337,17 @@ module.exports = grammar({
     headline_chars_complex: ($) => choice(
       $.not_lsb_whitespace1,
       seq("[", $.not_hash_newline1),
-      seq("[", "#", $.not_rsb_newline1 $.not_rsb_newline1),
+      seq("[", "#", $.not_rsb_newline1, $.not_rsb_newline1),
       seq("[", "#", "]", $.not_rsb_newline1)),
     not_tags: ($) => choice(
       seq($.not_colon_newline, repeat($.wsnn), $.newline_or_eof),
-      seq($.not_tag_whitespace, $.tags_contents, repeat($.wsnn), $.newline_or_eof),
+      seq($.not_tag_whitespace,
+          // $.tags_contents,
+          repeat($.wsnn), $.newline_or_eof),
       seq(
         $.not_tag_newline,
         $.not_colon_whitespace1,
-        $.tags_contents,
+        // $.tags_contents,
         repeat($.wsnn),
         $.newline_or_eof)),
     h_rt_title_begin: ($) => $.not_COMMENT_RTK_lsb_whitespace,
@@ -470,7 +472,7 @@ module.exports = grammar({
     ),
     keyword_line: ($) => seq(
       choice(seq("#", "+", $.keyword_key), $.kw_prefix),
-      optional($keyword_options),
+      optional($.keyword_options),
       ":",
       repeat1($.wsnn),
       optional($.keyword_value)),
@@ -492,24 +494,24 @@ module.exports = grammar({
       "NAME",
       "PLOT",
       "RESULTS",
-      $ak_key_attr
+      $.ak_key_attr
     ),
 
-    -keyword_line: ($) => choice(
-      seq(
-        choice(
-          seq("#", "+", $.keyword_key),
-          "END-DB",
-          "AUTHOR",
-          "DATE",
-          "TITLE"),
-        ":",
-        optional($.keyword_value)),
-      seq(
-        "#",
-        "+",
-        $.keyword_key_sigh,
-        optional($.keyword_value_sigh))),
+    // -keyword_line: ($) => choice(
+    //   seq(
+    //     choice(
+    //       seq("#", "+", $.keyword_key),
+    //       "END-DB",
+    //       "AUTHOR",
+    //       "DATE",
+    //       "TITLE"),
+    //     ":",
+    //     optional($.keyword_value)),
+    //   seq(
+    //     "#",
+    //     "+",
+    //     $.keyword_key_sigh,
+    //     optional($.keyword_value_sigh))),
 
     keyword_key: ($) => $.not_whitespace,
     keyword_value: ($) => $.not_newline,
@@ -580,12 +582,12 @@ module.exports = grammar({
       $.newline,
       $.blk_dyn_end),
     blk_dyn_begin: ($) => choice(
-      seq("BEGIN-DB", ":", $.wsnn, optional("$.blk_line_contents")),
+      seq("BEGIN-DB", ":", $.wsnn, optional($.blk_line_contents)),
       seq("BEGIN-DB", ":")),
     blk_dyn_end: ($) => seq("END-DB", ":"),
     blk_dyn_contents: ($) => repeat($.org_node_dyn),
     org_node_dyn: ($) => seq(
-      repeat($affiliated_keyword),
+      repeat($.affiliated_keyword),
       choice(
         $.drawer,
         $.org_nbe_less_d,
@@ -601,7 +603,7 @@ module.exports = grammar({
       optional($.not_newline)),
     start_not_headline: ($) => choice(
       $.not_asterisk_newline1,
-      seq($.start, $.not_asterisk_whitespace1),
+      // seq($.start, $.not_asterisk_whitespace1),
       $.word_char_n),
 
     blk_line_contents: ($) => $.not_newline,
@@ -641,12 +643,14 @@ module.exports = grammar({
       $.switches_sane,
       seq($.not_switch, $.not_newline)),
 
-    __test__switches_sane: ($) => seq(optional($.BOF), $.switches_sane),
+    __test__switches_sane: ($) => seq(
+      // optional($.BOF),
+      $.switches_sane),
     switches_sane: ($) => seq(
-      repeat(
+      repeat(seq(
         $.switch_sane,
         optional(seq($.wsnn, $.format_string)),
-        $.wsnn),
+        $.wsnn)),
       $.switch_sane,
       optional(seq($.wsnn, $.format_string))),
     switch_sane: ($) => seq($.switch_sign, $.alpha),
@@ -777,7 +781,7 @@ module.exports = grammar({
       $.month,
       "-",
       $.day,
-      optional(repeat1($.space), $day_abbrev)),
+      optional(seq(repeat1($.space), $.day_abbrev))),
     date_normal: ($) => seq($.year, $.date_suffix),
     year: ($) => "DIGIT-4",
     month: ($) => "DIGIT-2",
@@ -1023,7 +1027,7 @@ module.exports = grammar({
 
     not_at_whitespace1: ($) => choice($.ns_nwt_less_negated, $.unsyms_less_at),
     not_at_newline1: ($) => choice($.not_at_whitespace1, $.wsnn),
-    not_at1: ($) => choice($.not_at_newline1 | $.newline),
+    not_at1: ($) => choice($.not_at_newline1, $.newline),
 
     not_lsb_at_digit_newline1: ($) => choice(
       $.ns_nwt_less_negated,
