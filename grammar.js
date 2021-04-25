@@ -120,8 +120,7 @@ module.exports = grammar({
       choice(
         $.org_node_basic_element,
         $.double_blank_line,
-        $.newline,
-        $.bof)),
+        $.newline)),
 
     org_node_basic_element: ($) => choice(
       $.drawer,
@@ -153,12 +152,12 @@ module.exports = grammar({
       $.paragraph_f_in,
       $.comment_element),
 
-    paragraph: ($) => repeat1(choice(
+    paragraph: ($) => prec.left(50, repeat1(choice(
       seq("PARAGRAPH", optional($.not_newline)),
       seq($.hyperlink, optional($.not_newline)),
-      $.paragraph_line)),
+      $.paragraph_line))),
     paragraph_line: ($) => seq(
-      $.newline_or_bof,
+      $.newline,
       choice($.parl_lines, $.end)),
     paragraph_line_d: ($) => seq (
       $.newline,
@@ -257,13 +256,13 @@ module.exports = grammar({
       seq("[", $.not_rsb_newline1),
       ":"),
 
-    headline_node: ($) => seq(
+    headline_node: ($) => prec.right(50, seq(
       $.headline,
       optional(seq($.newline, choice($.planning, $.planning_malformed))),
-      optional($.property_drawer)),
+      optional($.property_drawer))),
     headline: ($) => choice(
       "HEADING",
-      seq($.newline_or_bof, $.stars, repeat1($.wsnn), optional($.headline_content))),
+      seq($.newline, $.stars, repeat1($.wsnn), optional($.headline_content))),
     stars: ($) => choice("ASTERISK", "STARS"),
     headline_content: ($) => $.not_newline,
 
@@ -314,8 +313,8 @@ module.exports = grammar({
       seq($.h_priority, repeat($.wsnn), $.h_comment, optional($.h_rt_title)),
       seq($.h_priority, repeat($.wsnn), optional($.h_rt_title_not_comment)),
       seq($.h_comment, optional($.h_rt_title))),
-    h_rt_mid: ($) => choice($.h_rt_mid_common, optional($.h_rt_title_not_comment)),
-    h_rt_mid_no_rtk: ($) => choice($.h_rt_mid_common, optional($.h_rt_title_not_comment_rtk)),
+    h_rt_mid: ($) => choice($.h_rt_mid_common, $.h_rt_title_not_comment),
+    h_rt_mid_no_rtk: ($) => choice($.h_rt_mid_common, $.h_rt_title_not_comment_rtk),
     h_rt_mid_weird: ($) => choice($.h_rt_mid_common, $.h_rt_title_weird),
     h_rt_title_weird: ($) => choice(
       seq(
@@ -378,7 +377,7 @@ module.exports = grammar({
       repeat1(choice($.tag_start, $.tag_archive)),
       ":"),
     tag_start: ($) => seq(":", $.tag_name),
-    tag_name: ($) => repeat($.tag_name_parts),
+    tag_name: ($) => repeat1($.tag_name_parts),
     tag_name_parts: ($) => choice(
       $.word_char_n,
       $.word_char,
@@ -438,7 +437,7 @@ module.exports = grammar({
       $.drawer_spec,
       $.pdrawer_unparsed),
     drawer_spec: ($) => seq(
-      $.newline_or_bof,
+      $.newline,
       repeat($.wsnn),
       choice(
         seq(":", $.drawer_name, ":"),
@@ -449,21 +448,21 @@ module.exports = grammar({
       $.nlws,
       $.end),
     drawer_name: ($) => $.wordhyus,
-    drawer_contents: ($) => repeat($.org_node_d),
-    org_node_d: ($) => repeat($.affiliated_keyword),
+    drawer_contents: ($) => repeat1($.org_node_d),
+    org_node_d: ($) => repeat1($.affiliated_keyword),
 
-    comment_element: ($) => repeat1(choice(
+    comment_element: ($) => prec.left(50, repeat1(choice(
       "COMMENT-ELEMENT",
-      $.comment_line)),
+      $.comment_line))),
     comment_line: ($) => seq(
-      $.newline_or_bof,
+      $.newline,
       repeat($.wsnn),
       "#",
       optional(seq(
         repeat1($.wsnn),
         optional($.not_newline)))),
 
-    nlbofwsnn: ($) => seq($.newline_or_bof, repeat($.wsnn)),
+    nlbofwsnn: ($) => seq($.newline, repeat($.wsnn)),
     babel_call: ($) => seq($.nlbofwsnn, "CALL", ":", optional($.not_newline)),
 
     keyword: ($) => choice(
@@ -542,7 +541,7 @@ module.exports = grammar({
 
     block_less_dyn: ($) => choice(
       $.blk_src,
-      seq($.newline_or_bof, $.blk_ex)),
+      seq($.newline, $.blk_ex)),
 
     blk_ex: ($) => seq($.blk_ex_begin, $.blk_ex_contents, $.nlpws, $.blk_ex_end),
     blk_ex_begin: ($) => choice(
@@ -576,16 +575,16 @@ module.exports = grammar({
     block_type_rest: ($) => $.not_whitespace,
 
     blk_dyn: ($) => seq(
-      $.newline_or_bof,
+      $.newline,
       $.blk_dyn_begin,
-      $.blk_dyn_contents,
+      optional($.blk_dyn_contents),
       $.newline,
       $.blk_dyn_end),
     blk_dyn_begin: ($) => choice(
       seq("BEGIN-DB", ":", $.wsnn, optional($.blk_line_contents)),
       seq("BEGIN-DB", ":")),
     blk_dyn_end: ($) => seq("END-DB", ":"),
-    blk_dyn_contents: ($) => repeat($.org_node_dyn),
+    blk_dyn_contents: ($) => repeat1($.org_node_dyn),
     org_node_dyn: ($) => seq(
       repeat($.affiliated_keyword),
       choice(
@@ -618,7 +617,7 @@ module.exports = grammar({
     blk_src: ($) => choice(
       "SRC-BLOCK",
       seq(
-        $.newline_or_bof,
+        $.newline,
         $.blk_src_begin,
         optional($.blk_src_contents),
         $.nlpws,
@@ -690,10 +689,10 @@ module.exports = grammar({
       seq("BS", "\""),
       "BS")),
 
-    table: ($) => repeat1($.table_row),
-    table_dumb: ($) => seq($.newline_or_bof, "|", $.not_newline),
+    table: ($) => prec.right(50, repeat1($.table_row)),
+    table_dumb: ($) => seq($.newline, "|", $.not_newline),
     table_row: ($) => seq(
-      $.newline_or_bof,
+      $.newline,
       repeat($.wsnn),
       repeat1($.table_cell),
       optional("|")),
@@ -707,10 +706,10 @@ module.exports = grammar({
       optional($.space)),
 
     plain_list_line: ($) => seq(
-      $.newline_or_bof,
-      $.pl_indent,
+      $.newline,
+      optional($.pl_indent),
       choice($.ordered_list_line, $.descriptive_list_line)),
-    pl_indent: ($) => repeat($.wsnn),
+    pl_indent: ($) => repeat1($.wsnn),
     ordered_list_line: ($) => seq($.bullet_counter, optional($.plain_list_line_tail)),
     bullet_counter: ($) => seq(
       choice($.digits, $.alphas_unmixed),
@@ -819,8 +818,8 @@ module.exports = grammar({
 
     // TODO export_snippets
 
-    newline_or_bof: ($) => choice($.newline, "BOF"),
-    newline_or_eof: ($) => optional($.newline),
+    newline_or_bof: ($) => choice($.newline, $.bof),
+    newline_or_eof: ($) => $.newline, // Or EOF ??
     nlws: ($) => seq(
       $.newline,
       repeat(choice(
@@ -842,10 +841,10 @@ module.exports = grammar({
     blank_line: ($) => seq(
       $.newline,
       $.newline),
-    double_blank_line: ($) => seq(
+    double_blank_line: ($) => prec(50, seq(
       $.newline,
       $.newline,
-      $.newline),
+      $.newline)),
 
     bof: ($) => "BOF",
     newline: ($) => choice("\n", "\r\n"),
