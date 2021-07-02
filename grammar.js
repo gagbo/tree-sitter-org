@@ -24,7 +24,7 @@
 module.exports = grammar({
   name: "org",
 
-  externals: ($) => [],
+  externals: (_$) => [],
 
   // In brag, @ before a rule identifier means we don't want the rule
   // to generate a node in the AST.
@@ -162,7 +162,7 @@ module.exports = grammar({
     paragraph_line_d: ($) => seq (
       $.newline,
       $.parl_lines),
-    hyperlink: ($) => "LINK",
+    hyperlink: (_$) => "LINK",
 
     paragraph_f_in: ($) => repeat1($.paragraph_line_f_in),
     paragraph_line_f_in: ($) => seq(
@@ -263,7 +263,7 @@ module.exports = grammar({
     headline: ($) => choice(
       "HEADING",
       seq($.newline, $.stars, repeat1($.wsnn), optional($.headline_content))),
-    stars: ($) => choice("ASTERISK", "STARS"),
+    stars: (_$) => choice("ASTERISK", "STARS"),
     headline_content: ($) => $.not_newline,
 
     planning: ($) => seq(
@@ -291,10 +291,10 @@ module.exports = grammar({
       $.plan_sched,
       $.plan_open,
       $.plan_close),
-    plan_dead: ($) => "CHARS-DEADLINE",
-    plan_sched: ($) => "CHARS-SCHEDULED",
-    plan_open: ($) => "CHARS-OPENED",
-    plan_close: ($) => "CHARS-CLOSED",
+    plan_dead: (_$) => "CHARS-DEADLINE",
+    plan_sched: (_$) => "CHARS-SCHEDULED",
+    plan_open: (_$) => "CHARS-OPENED",
+    plan_close: (_$) => "CHARS-CLOSED",
 
     headline_content_2: ($) => choice(
       seq(
@@ -325,7 +325,7 @@ module.exports = grammar({
         optional($.h_rt_tags_missing_space))),
     h_rt_tags_missing_space: ($) => seq($.h_tags, repeat($.wsnn), $.newline),
 
-    h_rt_todo_keyword: ($) => "RUNTIME-TODO-KEYWORD",
+    h_rt_todo_keyword: (_$) => "RUNTIME-TODO-KEYWORD",
     h_rt_title: ($) => $.h_ctt_start,
     h_rt_tags: ($) => seq(repeat1($.wsnn), $.h_rt_tags_tail),
     h_rt_tags_tail: ($) => seq(
@@ -367,7 +367,7 @@ module.exports = grammar({
         $.h_rt_title_end),
       $.h_rt_title_single),
 
-    h_comment: ($) => "CHARS-COMMENT",
+    h_comment: (_$) => "CHARS-COMMENT",
 
     h_priority: ($) => $.priority,
     priority: ($) => seq("[", "#", $.priority_level, "]"),
@@ -390,7 +390,7 @@ module.exports = grammar({
       ":",
       "ARCHIVE")),
 
-    tag_archive: ($) => "ARCHIVE",
+    tag_archive: (_$) => "ARCHIVE",
 
     h_ctt_start: ($) => choice(
       seq(
@@ -411,10 +411,10 @@ module.exports = grammar({
         repeat($.node_property),
         $.nlws,
         $.end)),
-    pdrawer_unparsed: ($) => "DRAWER-PROPS",
-    properties: ($) => "PROPERTIES-D",
-    end: ($) => "END-D",
-    plus: ($) => "+",
+    pdrawer_unparsed: (_$) => "DRAWER-PROPS",
+    properties: (_$) => "PROPERTIES-D",
+    end: (_$) => "END-D",
+    plus: (_$) => "+",
     node_property: ($) => seq(
       $.newline,
       repeat($.wsnn),
@@ -475,10 +475,10 @@ module.exports = grammar({
       ":",
       repeat1($.wsnn),
       optional($.keyword_value)),
-    kw_prefix: ($) => choice("AUTHOR", "DATE", "TITLE"),
+    kw_prefix: (_$) => choice("AUTHOR", "DATE", "TITLE"),
     keyword_options: ($) => seq("[", $.not_newline, "]"),
 
-    todo_spec_line: ($) => "TODO-SPEC-LINE",
+    todo_spec_line: (_$) => "TODO-SPEC-LINE",
 
     affiliated_keyword: ($) => seq($.nlbofwsnn, $.affiliated_keyword_line),
     affiliated_keyword_line: ($) => seq(
@@ -515,7 +515,7 @@ module.exports = grammar({
     keyword_key: ($) => $.not_whitespace,
     keyword_value: ($) => $.not_newline,
 
-    keyword_key_sigh: ($) => choice("END-D", "PROPERTIES-D"),
+    keyword_key_sigh: (_$) => choice("END-D", "PROPERTIES-D"),
     keyword_value_sigh: ($) => choice(
       $.not_colon_newline,
       seq(
@@ -528,16 +528,16 @@ module.exports = grammar({
     ak_value: ($) => $.not_newline,
     ak_key_attr: ($) => seq("ATTR-PREFIX", $.attr_backend),
 
-    header: ($) => "HEADER",
-    name: ($) => "NAME",
-    plot: ($) => "PLOT",
+    header: (_$) => "HEADER",
+    name: (_$) => "NAME",
+    plot: (_$) => "PLOT",
     attr_backend: ($) => $.wordhyus,
 
     ak_opt: ($) => seq("[", $.not_newline, "]"),
     ak_key_opt: ($) => seq($.ak_key_name_opt, $.ak_opt),
     ak_key_name_opt: ($) => choice($.caption, $.result),
-    caption: ($) => "CAPTION",
-    result: ($) => "RESULT",
+    caption: (_$) => "CAPTION",
+    result: (_$) => "RESULT",
 
     block_less_dyn: ($) => choice(
       $.blk_src,
@@ -550,7 +550,7 @@ module.exports = grammar({
         $.wsnn,
         $.blk_line_contents),
       "BEGIN-EX"),
-    blk_ex_end: ($) => "END-EX",
+    blk_ex_end: (_$) => "END-EX",
     blk_ex_contents: ($) => $.no_headlines,
 
     blk_greater_begin: ($) => choice(
@@ -583,7 +583,7 @@ module.exports = grammar({
     blk_dyn_begin: ($) => choice(
       seq("BEGIN-DB", ":", $.wsnn, optional($.blk_line_contents)),
       seq("BEGIN-DB", ":")),
-    blk_dyn_end: ($) => seq("END-DB", ":"),
+    blk_dyn_end: (_$) => seq("END-DB", ":"),
     blk_dyn_contents: ($) => repeat1($.org_node_dyn),
     org_node_dyn: ($) => seq(
       repeat($.affiliated_keyword),
@@ -654,7 +654,7 @@ module.exports = grammar({
       optional(seq($.wsnn, $.format_string))),
     switch_sane: ($) => seq($.switch_sign, $.alpha),
     last_switch_string: ($) => seq($.wsnn, $.format_string),
-    switch_sign: ($) => choice("+", "-"),
+    switch_sign: (_$) => choice("+", "-"),
 
     not_switch: ($) => choice(
       $.not_plus_hyphen1,
@@ -737,7 +737,7 @@ module.exports = grammar({
       $.ts_range_inactive
     ),
     ts_diary: ($) => seq("LAB", "%%", "(", $.ts_diary_sexp, ")", ">"),
-    ts_diary_sexp: ($) => repeat1("NOT-RAB-NOT-NEWLINE"),
+    ts_diary_sexp: (_$) => repeat1("NOT-RAB-NOT-NEWLINE"),
     ts_active: ($) => seq(
       "LAB",
       $.date,
@@ -772,7 +772,7 @@ module.exports = grammar({
         $.time,
         $.ts_rod,
         "]")),
-    hh: ($) => seq("-", "-"),
+    hh: (_$) => seq("-", "-"),
 
     date: ($) => choice($.date_normal, $.date_ex),
     date_suffix: ($) => seq(
@@ -782,16 +782,16 @@ module.exports = grammar({
       $.day,
       optional(seq(repeat1($.space), $.day_abbrev))),
     date_normal: ($) => seq($.year, $.date_suffix),
-    year: ($) => "DIGIT-4",
-    month: ($) => "DIGIT-2",
-    day: ($) => "DIGIT-2",
+    year: (_$) => "DIGIT-4",
+    month: (_$) => "DIGIT-2",
+    day: (_$) => "DIGIT-2",
     date_ex: ($) => seq($.date_sign, $.year_ex, $.date_suffix),
     year_ex: ($) => $.digits,
-    date_sign: ($) => choice("+", "-"),
+    date_sign: (_$) => choice("+", "-"),
 
     time: ($) => seq($.hour, ":", $.minute),
-    hour: ($) => "DIGIT-2",
-    minute: ($) => "DIGIT-2",
+    hour: (_$) => "DIGIT-2",
+    minute: (_$) => "DIGIT-2",
     day_abbrev: ($) => $.not_lsb_hy_plus_digit_whitespace,
 
     ts_rod: ($) => seq(
@@ -802,14 +802,14 @@ module.exports = grammar({
       $.ts_rod_mark,
       $.ts_rod_value,
       $.ts_rod_unit),
-    ts_rod_mark: ($) => choice(
+    ts_rod_mark: (_$) => choice(
       "+",
       "++",
       ".+",
       "-",
       "--"),
     ts_rod_value: ($) => $.digits,
-    ts_rod_unit: ($) => choice(
+    ts_rod_unit: (_$) => choice(
       "h",
       "d",
       "w",
@@ -846,25 +846,25 @@ module.exports = grammar({
       $.newline,
       $.newline)),
 
-    bof: ($) => "BOF",
-    newline: ($) => choice("\n", "\r\n"),
+    bof: (_$) => "BOF",
+    newline: (_$) => choice("\n", "\r\n"),
 
-    space: ($) => " ",
-    tab: ($) => "\t",
+    space: (_$) => " ",
+    tab: (_$) => "\t",
 
-    bt_asterisk: ($) => "STARS",
-    bt_colon: ($) => choice("END-D", "PROPERTIES-D"),
-    bt_chars: ($) => choice("CHARS-ARCHIVE", "ARCHIVE"),
-    bt_chars_plan: ($) => choice(
+    bt_asterisk: (_$) => "STARS",
+    bt_colon: (_$) => choice("END-D", "PROPERTIES-D"),
+    bt_chars: (_$) => choice("CHARS-ARCHIVE", "ARCHIVE"),
+    bt_chars_plan: (_$) => choice(
       "CHARS-OPENED",
       "CHARS-CLOSED",
       "CHARS-DEADLINE",
       "CHARS-SCHEDULED"),
-    bt_chars_no_title_start: ($) => choice(
+    bt_chars_no_title_start: (_$) => choice(
       "CHARS-COMMENT",
       "RUNTIME-TODO-KEYWORD"
     ),
-    bt_hash: ($) => choice(
+    bt_hash: (_$) => choice(
       "CALL",
       "NAME",
       "HEADER",
@@ -877,10 +877,10 @@ module.exports = grammar({
       "ATTR-PREFIX",
       "BEGIN-DB",
       "END-DB"),
-    bt_blk_begin: ($) => choice("BEGIN-BLOCK", "BEGIN-SRC", "BEGIN-EX"),
-    bt_blk_end: ($) => choice("END-BLOCK", "END-SRC", "END-EX"),
+    bt_blk_begin: (_$) => choice("BEGIN-BLOCK", "BEGIN-SRC", "BEGIN-EX"),
+    bt_blk_end: (_$) => choice("END-BLOCK", "END-SRC", "END-EX"),
     bt_blk: ($) => choice($.bt_blk_begin, $.bt_blk_end),
-    bt_lsb: ($) => choice("FOOTNOTE-START", "FOOTNOTE-START-INLINE"),
+    bt_lsb: (_$) => choice("FOOTNOTE-START", "FOOTNOTE-START-INLINE"),
     big_tokes_less_d_s_p_cnt_blk: ($) => choice(
       $.bt_lsb,
       $.bt_hash,
@@ -938,14 +938,14 @@ module.exports = grammar({
       $.bt_colon,
       $.big_tokes_less_d_s),
 
-    alpha: ($) => /[a-zA-Z]/,
-    alpha_n: ($) => /[a-zA-Z]/,
-    digit_n: ($) => /\d{2,}/,
-    digits: ($) => /\d+/,
+    alpha: (_$) => /[a-zA-Z]/,
+    alpha_n: (_$) => /[a-zA-Z]/,
+    digit_n: (_$) => /\d{2,}/,
+    digits: (_$) => /\d+/,
     alphas: ($) => repeat1(choice($.alpha, $.alpha_n)),
     alphas_unmixed: ($) => choice($.alpha, $.alpha_n),
     word_char: ($) => choice(/\d/, $.alpha),
-    word_char_less_X: ($) => choice(/\d/, /[a-zA-WYZ]/),
+    word_char_less_X: (_$) => choice(/\d/, /[a-zA-WYZ]/),
     word_char_n: ($) => choice($.digit_n, $.alpha_n),
     wordhyus: ($) => repeat1(choice(
       $.word_char,
@@ -954,7 +954,7 @@ module.exports = grammar({
       $.word_char_n)),
     wordhy: ($) => repeat1(choice($.word_char, "-")),
 
-    nwt_less_negated: ($) => choice(
+    nwt_less_negated: (_$) => choice(
       "\\",
       "_",
       "'",
@@ -984,14 +984,14 @@ module.exports = grammar({
     unsyms_less_bullet: ($) => choice("@", "\\", "\"", "[", "]", "<", ">", "|", "#", ".", ")", ":", "%", "_", $.word_char),
     unsyms_less_pipe_bullet: ($) => choice("@", "\\", "\"", "[", "]", "<", ">", "#", ".", ")", ":", "%", "_", $.word_char),
     unsyms_less_pipe_bs: ($) => choice("@", "\"", "[", "]", "<", ">", "+", "#", ".", ")", ":", "%", "_", "-", "*", $.word_char),
-    unsyms_less_alpha: ($) => choice("@", "\\", "\"", "[", "]", "<", ">", "|", "+", "#", ".", ")", ":", "%", "_", "-", "*", /\d/),
+    unsyms_less_alpha: (_$) => choice("@", "\\", "\"", "[", "]", "<", ">", "|", "+", "#", ".", ")", ":", "%", "_", "-", "*", /\d/),
     unsyms_less_sb_colon: ($) => choice("@", "\\", "\"", "<", ">", "|", "+", "#", ".", ")", "%", "_", "-", "*", $.word_char),
     unsyms_less_pl_start: ($) => choice("@", "\\", "\"", "[", "]", "<", ">", ".", ")", ":", "%", "_", $.alpha),
     unsyms_less_prp: ($) => choice("@", "\\", "\"", "[", "]", "<", ">", "|", "+", "#", ":", "%", "_", "-", "*", $.word_char),
-    unsyms_less_tag: ($) => choice("\\", "\"", "[", "]", "<", ">", "|", "+", ".", ")", "-", "*"),
+    unsyms_less_tag: (_$) => choice("\\", "\"", "[", "]", "<", ">", "|", "+", ".", ")", "-", "*"),
     unsyms_less_dq_ph: ($) => choice("@", "\\", "[", "]", "<", ">", "|", "#", ".", ")", ":", "%", "_", "*", $.word_char),
     unsyms_less_colon_lsb: ($) => choice("@", "\\", "\"", "]", "<", ">", "|", "+", "#", ".", ")", "%", "_", "-", "*", $.word_char),
-    unsyms_less_lsb_tag: ($) => choice("\\", "\"", "]", "<", ">", "|", "+", ".", ")", "-", "*"),
+    unsyms_less_lsb_tag: (_$) => choice("\\", "\"", "]", "<", ">", "|", "+", ".", ")", "-", "*"),
     unsyms_less_digit: ($) => choice("@", "\\", "\"", "[", "]", "<", ">", "|", "+", "#", ".", ")", ":", "%", "_", "-", "*", $.alpha),
     unsyms_less_lsb_at_digit: ($) => choice("\\", "\"", "]", "<", ">", "|", "+", "#", ".", ")", ":", "%", "_", "-", "*", $.alpha),
     unsyms_less_lsb_X_hyphen: ($) => choice("@", "\\", "\"", "]", "<", ">", "|", "+", "#", ".", ")", ":", "%", "_", "*", $.word_char_less_X),
